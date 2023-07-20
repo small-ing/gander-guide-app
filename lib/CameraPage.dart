@@ -13,6 +13,7 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage> {
   bool isAlertOn = false;
+  bool isIndoor = false;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class _CameraPageState extends State<CameraPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Verbal/Vibrate Switch
             LiteRollingSwitch(
               value: isAlertOn,
               textOn: 'Verbal',
@@ -30,6 +32,26 @@ class _CameraPageState extends State<CameraPage> {
               colorOff: Colors.red,
               iconOn: Icons.volume_up,
               iconOff: Icons.vibration_outlined,
+              textSize: 16,
+              onChanged: (bool state) {
+                setState(() {
+                  isAlertOn = state;
+                });
+              },
+              onTap: () {}, // Add an empty function or a custom action here
+              onDoubleTap:
+                  () {}, // Add an empty function or a custom action here
+              onSwipe: () {}, // Add an empty function or a custom action here
+            ),
+            // Indoor/Outdoor Switch
+            LiteRollingSwitch(
+              value: isAlertOn,
+              textOn: 'Indoor',
+              textOff: 'Outdoor',
+              colorOn: Colors.blue,
+              colorOff: Colors.yellow,
+              iconOn: Icons.chair,
+              iconOff: Icons.grass,
               textSize: 16,
               onChanged: (bool state) {
                 setState(() {
