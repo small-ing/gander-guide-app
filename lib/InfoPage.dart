@@ -6,19 +6,32 @@ import 'package:url_launcher/url_launcher.dart';
 class InfoPage extends StatelessWidget {
   final List<Person> persons = [
     Person(name: 'Jacob Huser', url: 'https://www.linkedin.com/in/jacobhuser'),
-    Person(name: 'Alan Joseph', url: 'https://www.linkedin.com/in/alan-joseph-853047284/'),
-    Person(name: 'Alex Montello', url: 'https://www.youtube.com/watch?v=BBJa32lCaaY'),
-    Person(name: 'Richard Vick', url: 'https://www.linkedin.com/in/richard-vick-9901a3284/'),
+    Person(
+        name: 'Alan Joseph',
+        url: 'https://www.linkedin.com/in/alan-joseph-853047284/'),
+    Person(
+        name: 'Alex Montello',
+        url: 'https://www.youtube.com/watch?v=BBJa32lCaaY'),
+    Person(
+        name: 'Richard Vick',
+        url: 'https://www.linkedin.com/in/richard-vick-9901a3284/'),
     Person(name: 'Stephanie Wan', url: 'https://swan07.vercel.app/'),
-    Person(name: 'Kyle Wisnieski', url: 'https://www.linkedin.com/in/kyle-wisnieski-37b2b7283/'),
-    Person(name: 'Travis Smalling', url: 'https://www.linkedin.com/in/jack-smalling-1b1093201/'),
+    Person(
+        name: 'Kyle Wisnieski',
+        url: 'https://www.linkedin.com/in/kyle-wisnieski-37b2b7283/'),
+    Person(
+        name: 'Travis Smalling',
+        url: 'https://www.linkedin.com/in/jack-smalling-1b1093201/'),
   ];
+
+  const InfoPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.only(top: 100), // Add padding at the top to shift content down
+        padding: EdgeInsets.only(
+            top: 100), // Add padding at the top to shift content down
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -31,7 +44,8 @@ class InfoPage extends StatelessWidget {
                     fontSize: 56,
                     foreground: Paint()
                       ..style = PaintingStyle.stroke
-                      ..strokeWidth = 56 * 0.15 // Adjust the fraction as needed for the thickness
+                      ..strokeWidth = 56 *
+                          0.15 // Adjust the fraction as needed for the thickness
                       ..color = Color(0xFF3E235D),
                   ),
                 ),
@@ -48,7 +62,7 @@ class InfoPage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(16),
               child: Text(
-                'This app was developed by the Gleeful Geese at AI Camp',
+                'This app was developed by the Gleeful Geese at AI Camp:',
                 style: TextStyle(fontSize: 18, color: Colors.white),
                 textAlign: TextAlign.center,
               ),
@@ -84,7 +98,7 @@ class HyperlinkedPanel extends StatelessWidget {
   final String name;
   final String url;
 
-  HyperlinkedPanel({required this.name, required this.url});
+  const HyperlinkedPanel({super.key, required this.name, required this.url});
 
   _launchURL() async {
     if (await canLaunch(url)) {
