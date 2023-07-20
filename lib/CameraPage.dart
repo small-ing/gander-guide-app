@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
+import 'package:camera/camera.dart';
+import 'package:http/http.dart' as http;
+import 'package:vibration/vibration.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({super.key});

@@ -4,11 +4,11 @@ import 'HomePage.dart'; // Import the HomePage class
 // import 'InfoPage.dart'; // Import the InfoPage class
 
 void main() {
-  runApp(MyApp());
+  runApp(GanderGuide());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class GanderGuide extends StatelessWidget {
+  const GanderGuide({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
