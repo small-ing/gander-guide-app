@@ -4,27 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InfoPage extends StatelessWidget {
-  final List<Person> persons = [
-    Person(name: 'Jacob Huser', url: 'https://www.linkedin.com/in/jacobhuser'),
-    Person(
-        name: 'Alan Joseph',
-        url: 'https://www.linkedin.com/in/alan-joseph-853047284/'),
-    Person(
-        name: 'Alex Montello',
-        url: 'https://www.youtube.com/watch?v=BBJa32lCaaY'),
-    Person(
-        name: 'Richard Vick',
-        url: 'https://www.linkedin.com/in/richard-vick-9901a3284/'),
-    Person(name: 'Stephanie Wan', url: 'https://swan07.vercel.app/'),
-    Person(
-        name: 'Kyle Wisnieski',
-        url: 'https://www.linkedin.com/in/kyle-wisnieski-37b2b7283/'),
-    Person(
-        name: 'Travis Smalling',
-        url: 'https://www.linkedin.com/in/jack-smalling-1b1093201/'),
-  ];
+  final List<Person> persons = [];
 
-  const InfoPage({super.key});
+  InfoPage({super.key}) {
+    persons.add(Person(name: 'Jacob Huser', url: 'https://www.linkedin.com/in/jacobhuser/'));
+    persons.add(Person(name: 'Alan Joseph', url: 'https://www.linkedin.com/in/alan-joseph-853047284/'));
+    persons.add(Person(name: 'Alex Montello', url: 'https://www.youtube.com/watch?v=BBJa32lCaaY/'));
+    persons.add(Person(name: 'Richard Vick', url: 'https://www.linkedin.com/in/richard-vick-9901a3284/'));
+    persons.add(Person(name: 'Stephanie Wan', url: 'https://swan07.vercel.app/'));
+    persons.add(Person(name: 'Kyle Wisnieski', url: 'https://www.linkedin.com/in/kyle-wisnieski-37b2b7283/'));
+    persons.add(Person(name: 'Travis Smalling', url: 'https://www.linkedin.com/in/jack-smalling-1b1093201/'));
+  }
 
   @override
   Widget build(BuildContext context) {

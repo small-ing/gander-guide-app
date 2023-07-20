@@ -224,13 +224,13 @@
       "languageVersion": "2.14"
     },
     {
-      "name": "myapp",
+      "name": "ganderguide",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-07-19T21:34:53.395493Z",
+  "generated": "2023-07-20T14:59:45.461481Z",
   "generator": "pub",
   "generatorVersion": "3.0.6"
 }
