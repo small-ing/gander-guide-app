@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:path/path.dart' as path;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +21,12 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
-  bool isAlertOn = false;
+  bool isAlertOn = true;
   bool isIndoor = false;
+  int _vibrationDuration = 0;
+  int _vibrationAmplitude = 0; 
+  Uint8List imageBytes = Uint8List(0);
+
 
   @override
   void initState() {
@@ -46,6 +51,7 @@ class _CameraPageState extends State<CameraPage> {
     setState(() {});
   }
 
+
   Future<void> takePictureAndPost() async {
     if (!_cameraController!.value.isInitialized) {
       Fluttertoast.showToast(msg: 'Camera is not initialized.');
@@ -53,30 +59,57 @@ class _CameraPageState extends State<CameraPage> {
     }
 
     try {
+      debugPrint('Taking picture...');
       final image = await _cameraController!.takePicture();
       final apiResponse = await sendFrameToAPI(File(image.path));
-      Fluttertoast.showToast(msg: apiResponse);
+      //debugPrint('JSON being returned: $apiResponse');
+      if (isAlertOn) {
+        debugPrint('Vibrating...');
+        bool? hasVibrator = await Vibration.hasVibrator();
+        if (hasVibrator! && _vibrationDuration > 0) {
+          //debugPrint('Device has a vibrator');
+          Vibration.vibrate(duration: _vibrationDuration, amplitude: _vibrationAmplitude);
+        } else {
+          debugPrint('Device does not have a vibrator or duration 0');
+        }
+
+      }
+      imageBytes = base64Decode(apiResponse);
+      //Fluttertoast.showToast(msg: apiResponse);
     } catch (e) {
-      Fluttertoast.showToast(msg: 'Error capturing picture: $e');
+      Fluttertoast.showToast(msg: 'Error capturing picture or Vibrating phone: $e');
     }
   }
 
   Future<String> sendFrameToAPI(File frame) async {
     try {
+      debugPrint('Sending frame to API...');
       final bytes = await frame.readAsBytes();
       final base64Image = base64Encode(bytes);
-
+      String vibe = 'false';
+      String indoor = 'false';
+      if (isAlertOn) {
+        vibe = 'true';
+      }
+      if (isIndoor) {
+        indoor = 'true';
+      }
+      debugPrint('Sending frame to API at $apiEndpoint');
       final response = await http.post(
         Uri.parse(apiEndpoint),
-        body: jsonEncode({'image': base64Image}),
+        body: jsonEncode({'image': base64Image, 'vibrate': vibe,'indoor': indoor}),
         headers: {'Content-Type': 'application/json'},
       );
 
       if (response.statusCode == 200) {
+        debugPrint('API request returned 200 OK');
         final jsonResponse = jsonDecode(response.body);
-        final apiResponse = jsonResponse['text'] as String;
-        return apiResponse;
+        debugPrint('JSON response: $jsonResponse');
+        _vibrationAmplitude = jsonResponse['amplitude'];
+        _vibrationDuration = jsonResponse['duration'];
+        return jsonResponse['image'];
       } else {
+        debugPrint('API request failed with status code: ${response.statusCode}');
         return 'API request failed with status code: ${response.statusCode}';
       }
     } catch (e) {
@@ -104,6 +137,7 @@ class _CameraPageState extends State<CameraPage> {
               textSize: 16,
               onChanged: (bool state) {
                 setState(() {
+                  debugPrint("Switching Vibrate to $state");
                   isAlertOn = state;
                 });
               },
@@ -124,6 +158,7 @@ class _CameraPageState extends State<CameraPage> {
               textSize: 16,
               onChanged: (bool state) {
                 setState(() {
+                  debugPrint("Switching Indoors to $state");
                   isAlertOn = state;
                 });
               },
@@ -137,8 +172,18 @@ class _CameraPageState extends State<CameraPage> {
               width: MediaQuery.of(context).size.width * 0.85,
               decoration: BoxDecoration(
                 color: Colors.grey, // Customize the color of the square
+                image: DecorationImage(
+                  image: MemoryImage(imageBytes),
+                  fit: BoxFit.cover,
+                ),
                 borderRadius: BorderRadius.circular(8.0),
               ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                takePictureAndPost();
+              },
+              child: Text('Take Picture'),
             ),
           ],
         ),
