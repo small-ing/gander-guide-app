@@ -21,6 +21,7 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage> {
   bool isAlertOn = false;
+  bool isIndoor = false;
 
   @override
   void initState() {
@@ -91,6 +92,7 @@ class _CameraPageState extends State<CameraPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Verbal/Vibrate Switch
             LiteRollingSwitch(
               value: isAlertOn,
               textOn: 'Verbal',
@@ -110,15 +112,32 @@ class _CameraPageState extends State<CameraPage> {
                   () {}, // Add an empty function or a custom action here
               onSwipe: () {}, // Add an empty function or a custom action here
             ),
-            GestureDetector(
-              onTap: takePictureAndPost,
-              child: Container(
-                height: MediaQuery.of(context).size.height / 2,
-                width: MediaQuery.of(context).size.width * 0.85,
-                decoration: BoxDecoration(
-                  color: Colors.grey, // Customize the color of the square
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
+            // Indoor/Outdoor Switch
+            LiteRollingSwitch(
+              value: isAlertOn,
+              textOn: 'Indoor',
+              textOff: 'Outdoor',
+              colorOn: Colors.blue,
+              colorOff: Colors.yellow,
+              iconOn: Icons.chair,
+              iconOff: Icons.grass,
+              textSize: 16,
+              onChanged: (bool state) {
+                setState(() {
+                  isAlertOn = state;
+                });
+              },
+              onTap: () {}, // Add an empty function or a custom action here
+              onDoubleTap:
+                  () {}, // Add an empty function or a custom action here
+              onSwipe: () {}, // Add an empty function or a custom action here
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height / 2,
+              width: MediaQuery.of(context).size.width * 0.85,
+              decoration: BoxDecoration(
+                color: Colors.grey, // Customize the color of the square
+                borderRadius: BorderRadius.circular(8.0),
               ),
             ),
           ],
