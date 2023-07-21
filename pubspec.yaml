@@ -44,6 +44,7 @@ dependencies:
   http: ^1.1.0
   path: ^1.8.3
   background_fetch: ^1.1.6
+  flutter_launcher_icons: ^0.13.1
 
   
 
@@ -98,3 +99,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "images/LauncherIcon.png"

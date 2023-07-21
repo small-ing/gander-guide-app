@@ -39,6 +39,7 @@ class _CameraPageState extends State<CameraPage> {
   @override
   void dispose() {
     _cameraController?.dispose();
+    pictureTimer?.cancel();
     super.dispose();
   }
 
@@ -71,7 +72,10 @@ class _CameraPageState extends State<CameraPage> {
         bool? hasVibrator = await Vibration.hasVibrator();
         if (hasVibrator == true && _vibrationDuration > 0) {
           //debugPrint('Device has a vibrator');
+          debugPrint("Vibrating for $_vibrationDuration milliseconds at $_vibrationAmplitude amplitude");
           Vibration.vibrate(duration: _vibrationDuration, amplitude: _vibrationAmplitude);
+        } else if(hasVibrator == true && _vibrationDuration == 0){
+          Vibration.vibrate(duration: 10000, amplitude: _vibrationAmplitude);
         } else {
           debugPrint('Device does not have a vibrator or duration 0');
         }
@@ -110,7 +114,7 @@ class _CameraPageState extends State<CameraPage> {
       if (response.statusCode == 200) {
         debugPrint('API request returned 200 OK');
         final jsonResponse = jsonDecode(response.body);
-        debugPrint('JSON response: $jsonResponse');
+        //debugPrint('JSON response: $jsonResponse');
         _vibrationAmplitude = jsonResponse['amplitude'];
         _vibrationDuration = jsonResponse['duration'];
         return jsonResponse['image'];
@@ -132,6 +136,25 @@ Widget rotatedImage(Uint8List imageBytes) {
   );
 }
 
+bool isTimerRunning = false;
+  Timer? pictureTimer;
+
+
+  void startOrStopPictureTimer() {
+    setState(() {
+      if (isTimerRunning) {
+        // Stop the timer and set the flag to false
+        pictureTimer?.cancel();
+        isTimerRunning = false;
+      } else {
+        // Start the timer and set the flag to true
+        pictureTimer = Timer.periodic(Duration(seconds: 1), (_) {
+          takePictureAndPost();
+        });
+        isTimerRunning = true;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -192,16 +215,19 @@ Widget rotatedImage(Uint8List imageBytes) {
                 borderRadius: BorderRadius.circular(8.0),
                 color: Colors.grey,
               ),
-              child: FittedBox(
-                child: rotatedImage(imageBytes),
-                fit: BoxFit.cover,
-              ),
+              child: ClipRRect( // Wrap the FittedBox with a ClipRRect
+                borderRadius: BorderRadius.circular(8.0),
+                child: FittedBox(
+                  child: rotatedImage(imageBytes),
+                  fit: BoxFit.cover,
+                ),
+            ),
             ),
             ElevatedButton(
               onPressed: () async {
-                takePictureAndPost();
+                startOrStopPictureTimer();
               },
-              child: Text('Take Picture'),
+              child: Text(isTimerRunning ? 'Stop Taking Pictures' : 'Start Taking Pictures'),
             ),
           ],
         ),
