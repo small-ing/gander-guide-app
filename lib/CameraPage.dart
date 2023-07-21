@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:convert';
 import 'dart:typed_data';
+import 'dart:math' as math;
+import 'dart:async';
 import 'package:path/path.dart' as path;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +23,8 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
-  bool isAlertOn = true;
-  bool isIndoor = false;
+  bool isAlertOn = false;
+  bool isIndoor = true;
   int _vibrationDuration = 0;
   int _vibrationAmplitude = 0; 
   Uint8List imageBytes = Uint8List(0);
@@ -46,6 +48,7 @@ class _CameraPageState extends State<CameraPage> {
     _cameraController = CameraController(
       camera,
       ResolutionPreset.medium,
+      imageFormatGroup: ImageFormatGroup.jpeg,
     );
     await _cameraController!.initialize();
     setState(() {});
@@ -63,10 +66,10 @@ class _CameraPageState extends State<CameraPage> {
       final image = await _cameraController!.takePicture();
       final apiResponse = await sendFrameToAPI(File(image.path));
       //debugPrint('JSON being returned: $apiResponse');
-      if (isAlertOn) {
+      if (!isAlertOn) {
         debugPrint('Vibrating...');
         bool? hasVibrator = await Vibration.hasVibrator();
-        if (hasVibrator! && _vibrationDuration > 0) {
+        if (hasVibrator == true && _vibrationDuration > 0) {
           //debugPrint('Device has a vibrator');
           Vibration.vibrate(duration: _vibrationDuration, amplitude: _vibrationAmplitude);
         } else {
@@ -75,9 +78,12 @@ class _CameraPageState extends State<CameraPage> {
 
       }
       imageBytes = base64Decode(apiResponse);
+      setState(() {});
+      debugPrint("State updated");
+      
       //Fluttertoast.showToast(msg: apiResponse);
     } catch (e) {
-      Fluttertoast.showToast(msg: 'Error capturing picture or Vibrating phone: $e');
+      Fluttertoast.showToast(msg: 'Error capturing picture or Vibrating phone: $e', toastLength: Toast.LENGTH_LONG);
     }
   }
 
@@ -88,7 +94,7 @@ class _CameraPageState extends State<CameraPage> {
       final base64Image = base64Encode(bytes);
       String vibe = 'false';
       String indoor = 'false';
-      if (isAlertOn) {
+      if (!isAlertOn) {
         vibe = 'true';
       }
       if (isIndoor) {
@@ -97,7 +103,7 @@ class _CameraPageState extends State<CameraPage> {
       debugPrint('Sending frame to API at $apiEndpoint');
       final response = await http.post(
         Uri.parse(apiEndpoint),
-        body: jsonEncode({'image': base64Image, 'vibrate': vibe,'indoor': indoor}),
+        body: jsonEncode({'image': base64Image, 'vibrate': vibe, 'indoor': indoor}),
         headers: {'Content-Type': 'application/json'},
       );
 
@@ -116,6 +122,16 @@ class _CameraPageState extends State<CameraPage> {
       return 'Error sending frame to API: $e';
     }
   }
+
+Widget rotatedImage(Uint8List imageBytes) {
+  if (imageBytes.isEmpty) return Container(); // Return an empty container if imageBytes is empty.
+
+  return Transform.rotate(
+    angle: 90 * math.pi / 180, // Rotate the image by -90 degrees (clockwise).
+    child: Image.memory(imageBytes),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +164,7 @@ class _CameraPageState extends State<CameraPage> {
             ),
             // Indoor/Outdoor Switch
             LiteRollingSwitch(
-              value: isAlertOn,
+              value: isIndoor,
               textOn: 'Indoor',
               textOff: 'Outdoor',
               colorOn: Colors.blue,
@@ -169,14 +185,16 @@ class _CameraPageState extends State<CameraPage> {
             ),
             Container(
               height: MediaQuery.of(context).size.height / 2,
-              width: MediaQuery.of(context).size.width * 0.85,
+              width: MediaQuery.of(context).size.width * 0.75,
+              //height: 360,
+              //width: 270,
               decoration: BoxDecoration(
-                color: Colors.grey, // Customize the color of the square
-                image: DecorationImage(
-                  image: MemoryImage(imageBytes),
-                  fit: BoxFit.cover,
-                ),
                 borderRadius: BorderRadius.circular(8.0),
+                color: Colors.grey,
+              ),
+              child: FittedBox(
+                child: rotatedImage(imageBytes),
+                fit: BoxFit.cover,
               ),
             ),
             ElevatedButton(
