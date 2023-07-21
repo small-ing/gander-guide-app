@@ -6,10 +6,14 @@
 // @dart = 3.0
 
 import 'dart:io'; // flutter_ignore: dart_io_import.
+import 'package:camera_android/camera_android.dart';
 import 'package:url_launcher_android/url_launcher_android.dart';
+import 'package:camera_avfoundation/camera_avfoundation.dart';
 import 'package:url_launcher_ios/url_launcher_ios.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:url_launcher_linux/url_launcher_linux.dart';
 import 'package:url_launcher_macos/url_launcher_macos.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:url_launcher_windows/url_launcher_windows.dart';
 
 @pragma('vm:entry-point')
@@ -18,6 +22,15 @@ class _PluginRegistrant {
   @pragma('vm:entry-point')
   static void register() {
     if (Platform.isAndroid) {
+      try {
+        AndroidCamera.registerWith();
+      } catch (err) {
+        print(
+          '`camera_android` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
       try {
         UrlLauncherAndroid.registerWith();
       } catch (err) {
@@ -29,6 +42,15 @@ class _PluginRegistrant {
 
     } else if (Platform.isIOS) {
       try {
+        AVFoundationCamera.registerWith();
+      } catch (err) {
+        print(
+          '`camera_avfoundation` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
         UrlLauncherIOS.registerWith();
       } catch (err) {
         print(
@@ -38,6 +60,15 @@ class _PluginRegistrant {
       }
 
     } else if (Platform.isLinux) {
+      try {
+        DeviceInfoPlusLinuxPlugin.registerWith();
+      } catch (err) {
+        print(
+          '`device_info_plus` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
       try {
         UrlLauncherLinux.registerWith();
       } catch (err) {
@@ -58,6 +89,15 @@ class _PluginRegistrant {
       }
 
     } else if (Platform.isWindows) {
+      try {
+        DeviceInfoPlusWindowsPlugin.registerWith();
+      } catch (err) {
+        print(
+          '`device_info_plus` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
       try {
         UrlLauncherWindows.registerWith();
       } catch (err) {

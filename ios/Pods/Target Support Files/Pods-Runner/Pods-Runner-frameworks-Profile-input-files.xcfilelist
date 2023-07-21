@@ -1,2 +1,8 @@
 ${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Toast/Toast.framework
+${BUILT_PRODUCTS_DIR}/background_fetch/background_fetch.framework
+${BUILT_PRODUCTS_DIR}/camera_avfoundation/camera_avfoundation.framework
+${BUILT_PRODUCTS_DIR}/device_info_plus/device_info_plus.framework
+${BUILT_PRODUCTS_DIR}/fluttertoast/fluttertoast.framework
 ${BUILT_PRODUCTS_DIR}/url_launcher_ios/url_launcher_ios.framework
+${BUILT_PRODUCTS_DIR}/vibration/vibration.framework

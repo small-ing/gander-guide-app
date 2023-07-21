@@ -1,0 +1,2 @@
+${PODS_ROOT}/Target Support Files/background_fetch/background_fetch-xcframeworks.sh
+${PODS_ROOT}/../.symlinks/plugins/background_fetch/ios/TSBackgroundFetch.xcframework

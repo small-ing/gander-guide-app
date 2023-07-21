@@ -1,4 +1,4 @@
-name: Gander Guide
+name: ganderguide
 description: A new way to see.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -39,8 +39,10 @@ dependencies:
   lite_rolling_switch: ^1.0.1
   url_launcher: ^6.0.10
   vibration: ^1.7.5
+  fluttertoast: ^8.0.7
   camera: ^0.10.0
-  http: ^0.13.3
+  http: ^1.1.0
+  path: ^1.8.3
   background_fetch: ^1.1.6
 
   

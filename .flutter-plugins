@@ -1,4 +1,12 @@
 # This is a generated file; do not edit or check into version control.
+background_fetch=/Users/jtsmalling/.pub-cache/hosted/pub.dev/background_fetch-1.1.6/
+camera=/Users/jtsmalling/.pub-cache/hosted/pub.dev/camera-0.10.5+2/
+camera_android=/Users/jtsmalling/.pub-cache/hosted/pub.dev/camera_android-0.10.8+4/
+camera_avfoundation=/Users/jtsmalling/.pub-cache/hosted/pub.dev/camera_avfoundation-0.9.13+2/
+camera_web=/Users/jtsmalling/.pub-cache/hosted/pub.dev/camera_web-0.3.1+4/
+device_info_plus=/Users/jtsmalling/.pub-cache/hosted/pub.dev/device_info_plus-9.0.2/
+flutter_plugin_android_lifecycle=/Users/jtsmalling/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.15/
+fluttertoast=/Users/jtsmalling/.pub-cache/hosted/pub.dev/fluttertoast-8.2.2/
 url_launcher=/Users/jtsmalling/.pub-cache/hosted/pub.dev/url_launcher-6.1.12/
 url_launcher_android=/Users/jtsmalling/.pub-cache/hosted/pub.dev/url_launcher_android-6.0.36/
 url_launcher_ios=/Users/jtsmalling/.pub-cache/hosted/pub.dev/url_launcher_ios-6.1.4/
@@ -6,3 +14,4 @@ url_launcher_linux=/Users/jtsmalling/.pub-cache/hosted/pub.dev/url_launcher_linu
 url_launcher_macos=/Users/jtsmalling/.pub-cache/hosted/pub.dev/url_launcher_macos-3.0.6/
 url_launcher_web=/Users/jtsmalling/.pub-cache/hosted/pub.dev/url_launcher_web-2.0.18/
 url_launcher_windows=/Users/jtsmalling/.pub-cache/hosted/pub.dev/url_launcher_windows-3.0.7/
+vibration=/Users/jtsmalling/.pub-cache/hosted/pub.dev/vibration-1.8.1/
